@@ -5,9 +5,23 @@ from django.utils.dateparse import parse_date
 from rest_framework.permissions import IsAdminUser
 from rest_framework.permissions import IsAuthenticated
 from account_system.models import Transaction, UserAccount
-from account_system.serializers import TransactionSerializer,TransactionSummarySerializer, TransactionDetailSerializer
+from account_system.serializers import UserAccountSerializer, TransactionSerializer,TransactionSummarySerializer, TransactionDetailSerializer, AccountSerializer, UserSerializer
 from account_system.permissions import ViewOnlyPermission, FullAccessPermission, PostOnlyPermission
 from account_system.models import Account
+from django.contrib.auth.models import User
+
+
+class UserAccountViewSet(viewsets.ModelViewSet):
+    queryset = UserAccount.objects.all()
+    serializer_class = UserAccountSerializer
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class AccountViewSet(viewsets.ModelViewSet):
+    queryset = Account.objects.all()
+    serializer_class = AccountSerializer
 
 
 class TransactionViewSet(viewsets.ModelViewSet):

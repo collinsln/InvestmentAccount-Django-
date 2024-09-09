@@ -1,10 +1,15 @@
+
 from django.db import models
 from django.contrib.auth.models import User
+
+#to add UserAccounts kama bridge for many-to-many relationship
+#Account kama acccount is C
+#Transaction
 
 class UserAccount(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     account = models.ForeignKey('Account', on_delete=models.CASCADE)
-    account_type = models.CharField(max_length=50)  # view_only, full_access, post_only
+    account_type = models.CharField(max_length=50)  # kama ni view_only,or full_access, or post_only
 
     class Meta:
         unique_together = ('user', 'account')

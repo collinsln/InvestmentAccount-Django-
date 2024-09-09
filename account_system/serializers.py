@@ -1,5 +1,24 @@
 from rest_framework import serializers
 from account_system.models import Account, Transaction, UserAccount
+from django.contrib.auth.models import User
+from account_system.models import UserAccount
+
+# user_account serializer url ya kucreate user and make them to belong tpo certain account
+class UserAccountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserAccount
+        fields = ['id', 'user', 'account', 'account_type']
+
+        # ni ya user creation url
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'password']
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        user = User.objects.create_user(**validated_data)
+        return user
 
 class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
