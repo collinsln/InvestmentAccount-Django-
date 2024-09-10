@@ -16,34 +16,34 @@ class AccountPostOnlyPermissionsTest(TestCase):
     def test_post_only_permissions(self):
         url = reverse('transaction-list', kwargs={'account_pk': self.account.id})
 
-        # Include the account field in the POST data
+       
         response = self.client.post(url, {
             'amount': 50,
             'description': 'New Post-Only Transaction',
             'date': timezone.now().date(),
-            'account': self.account.id  # Add the account field
+            'account': self.account.id  
         })
 
-        # Debugging output
-        print("POST response status code:", response.status_code)
+       
+        print("POST response status code:", response.status_code) # Debug output is it
         print("POST response content:", response.content)
 
         self.assertEqual(response.status_code, 201)
 
-        # Check if the transaction was created successfully and retrieve its ID
+        # Check kama hiyo transaction created successfully and retrieve its ID
         transaction_id = response.data.get('id')
         self.assertIsNotNone(transaction_id, "Transaction ID should not be None after creation.")
 
-        # Test READ (should fail for post-only users)
+        # Test ku_Read 
         response = self.client.get(url)
 
-        # Debugging output
-        print("GET response status code:", response.status_code)
+        
+        print("GET response status code:", response.status_code)# Debug output just like the above
         print("GET response content:", response.content)
 
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 403) #should fail for post-only users
 
-        # Test UPDATE (should fail for post-only users)
+        # Test ya ku_Update 
         update_url = reverse('transaction-detail', kwargs={'account_pk': self.account.id, 'pk': transaction_id})
         response = self.client.put(update_url, {
             'amount': 75,
@@ -52,17 +52,17 @@ class AccountPostOnlyPermissionsTest(TestCase):
             'account': self.account.id  # Include the account field
         })
 
-        # Debugging output
+        # Debug print
         print("PUT response status code:", response.status_code)
         print("PUT response content:", response.content)
 
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 403) #should fail for post-only users
 
-        # Test DELETE (should fail for post-only users)
+        # Test ku_Delete 
         response = self.client.delete(update_url)
 
         # Debugging output
         print("DELETE response status code:", response.status_code)
         print("DELETE response content:", response.content)
 
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 403)#should fail for post-only users

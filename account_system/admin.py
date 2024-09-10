@@ -1,3 +1,4 @@
+# Hii page aint compulsory if you not using Django admin panel
 from django.contrib import admin
 from .models import Account, Transaction, UserAccount
 from django.http import HttpResponse
@@ -14,7 +15,7 @@ class TransactionAdmin(admin.ModelAdmin):
         return qs.filter(account__in=accounts)
 
     def export_as_csv(self, request, queryset):
-        # Generate a CSV response
+        # Generate a text response
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename=transactions.csv'
         writer = csv.writer(response)
